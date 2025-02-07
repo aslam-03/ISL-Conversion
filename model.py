@@ -1,33 +1,33 @@
 import tensorflow as tf
-from tensorflow.keras.applications import MobileNetV2 # type: ignore
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D # type: ignore
-from tensorflow.keras.models import Model # type: ignore
-from tensorflow.keras.preprocessing.image import ImageDataGenerator # type: ignore
+from tensorflow.keras.applications import MobileNetV2 
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.models import Model
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Define dataset path
 dataset_path = 'C:\\Users\\ASLAM\\Desktop\\ISL\\dataset\\original_images'
 
 # Create ImageDataGenerator for data augmentation and rescaling
 datagen = ImageDataGenerator(
-    rescale=1./255,  # Normalize pixel values
-    validation_split=0.2  # Reserve 20% of the data for validation
+    rescale=1./255, 
+    validation_split=0.2 
 )
 
 # Create generators for training and validation data
 train_generator = datagen.flow_from_directory(
     dataset_path,
-    target_size=(250, 250),  # Resize images to 250x250
-    batch_size=32,  # Set the batch size
-    class_mode='categorical',  # Use categorical labels
-    subset='training'  # Use training subset
+    target_size=(250, 250),  
+    batch_size=32,  
+    class_mode='categorical', 
+    subset='training'  
 )
 
 validation_generator = datagen.flow_from_directory(
     dataset_path,
-    target_size=(250, 250),  # Resize images to 250x250
-    batch_size=32,  # Set the batch size
-    class_mode='categorical',  # Use categorical labels
-    subset='validation'  # Use validation subset
+    target_size=(250, 250),  
+    batch_size=32,  
+    class_mode='categorical', 
+    subset='validation'  
 )
 
 # Get the number of classes (categories)
@@ -56,7 +56,7 @@ model.compile(optimizer=tf.keras.optimizers.Adam(), loss='categorical_crossentro
 history = model.fit(
     train_generator,
     validation_data=validation_generator,
-    epochs=10  # Adjust the number of epochs based on your needs
+    epochs=10  
 )
 
 # Save the model
