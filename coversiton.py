@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
-from tensorflow.keras.models import load_model # type: ignore
-import pyttsx3  # For text-to-speech
+from tensorflow.keras.models import load_model 
+import pyttsx3  
 from tkinter import Tk, Label, Button, Text, Canvas
 from PIL import Image, ImageTk
 
@@ -22,9 +22,9 @@ def speak(text):
 
 # Function to preprocess the frame
 def preprocess_frame(frame):
-    img = cv2.resize(frame, (250, 250))  # Resize to the same size used in training
-    img = img / 255.0  # Normalize pixel values
-    img = np.expand_dims(img, axis=0)  # Add batch dimension
+    img = cv2.resize(frame, (250, 250))  
+    img = img / 255.0  
+    img = np.expand_dims(img, axis=0)  
     return img
 
 # Function to update the webcam feed
