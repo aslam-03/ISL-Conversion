@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISL to Text Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-hands"></i> ISL Hand Sign Recognition</h1>
+            <p>Real-time Indian Sign Language to Text Conversion</p>
+        </header>
+
+        <main class="main-content">
+            <div class="video-section">
+                <div class="video-container">
+                    <video id="video" autoplay muted style="display: block;"></video>
+                    <img id="videoFeed" src="" alt="Live Hand Detection Feed" style="width: 100%; height: auto; border-radius: 10px; display: none;">
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <canvas id="handCanvas" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
+                    <div class="video-overlay">
+                        <div class="status-indicator" id="status">
+                            <i class="fas fa-circle"></i>
+                            <span>Ready</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-controls">
+                    <button id="startBtn" class="btn btn-primary">
+                        <i class="fas fa-video"></i>
+                        Start Camera
+                    </button>
+                    <button id="stopBtn" class="btn btn-secondary" disabled>
+                        <i class="fas fa-video-slash"></i>
+                        Stop Camera
+                    </button>
+                </div>
+                
+                <div class="prediction-controls">
+                    <button id="signToTextBtn" class="btn btn-success" disabled>
+                        <i class="fas fa-hand-paper"></i>
+                        Hand Sign to Text
+                    </button>
+                    <button id="realtimeTextBtn" class="btn btn-primary" disabled>
+                        <i class="fas fa-play"></i>
+                        Real-time Text
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="prediction-card">
+                    <h3><i class="fas fa-brain"></i> Prediction</h3>
+                    <div class="prediction-result">
+                        <div class="predicted-letter" id="predictedLetter">-</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-label">Confidence:</div>
+                            <div class="confidence-progress">
+                                <div class="confidence-fill" id="confidenceFill"></div>
+                            </div>
+                            <div class="confidence-value" id="confidenceValue">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-card">
+                    <h3><i class="fas fa-keyboard"></i> Composed Text</h3>
+                    <div class="text-area">
+                        <textarea id="textArea" placeholder="Predicted letters will appear here..." readonly></textarea>
+                        <div class="text-controls">
+                            <button id="clearBtn" class="btn btn-warning">
+                                <i class="fas fa-trash"></i>
+                                Clear
+                            </button>
+                            <button id="copyBtn" class="btn btn-secondary">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-card">
+                    <h3><i class="fas fa-history"></i> Prediction History</h3>
+                    <div class="history-list" id="historyList">
+                        <p class="empty-history">No predictions yet</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal" id="errorModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 ISL Converter. Made with ❤️ for accessibility.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
