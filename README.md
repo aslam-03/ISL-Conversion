@@ -137,7 +137,7 @@ ISL-Conversion/
 
 ## 📞 Contact Information
 
-**Developer**: Mohammed Aslam I
+**Developer**: Mohamed Aslam I
 
 - **Email**: [aslamachu8558@gmail.com](mailto:aslamachu8558@gmail.com)
 - **LinkedIn**: [linkedin.com/in/mohammed-aslam](www.linkedin.com/in/mohamed-aslam-i)
