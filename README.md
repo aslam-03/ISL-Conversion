@@ -56,11 +56,12 @@ cd ISL-Conversion
 
 ### Step 2: Install Dependencies
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ### Step 3: Run the Application
 ```bash
+cd backend
 python app.py
 ```
 
@@ -75,42 +76,35 @@ http://localhost:5000
 ```
 ISL-Conversion/
 │
-├── app.py                          # Main Flask application
-├── requirements.txt                # Python dependencies
-├── README.md                      # Project documentation
+├── backend/                        # Backend logic and ML models
+│   ├── app.py                      # Main Flask application
+│   ├── requirements.txt            # Python dependencies
+│   ├── model/                      # Trained models
+│   │   ├── isl_mobilenetv2.h5      # Main MobileNetV2 model
+│   │   └── trained_model.h5        # Alternative trained model
+│   ├── dataset/                    # Training and testing data
+│   └── src/                        # Source code for model training
+│       ├── model.py                # Model architecture and training
+│       ├── process2.py             # Data preprocessing
+│       ├── test.py                 # Model testing utilities
+│       └── coversiton2.py          # Conversion utilities
 │
-├── app/                           # Web application files
+├── frontend/                       # Frontend assets
 │   ├── templates/
-│   │   └── index.html            # Main web interface
+│   │   └── index.html              # Main web interface
 │   └── static/
 │       ├── css/
-│       │   └── style.css         # Frontend styling
+│       │   └── style.css           # Frontend styling
 │       └── js/
-│           └── app.js            # Frontend JavaScript logic
+│           └── app.js              # Frontend JavaScript logic
 │
-├── model/                         # Trained models
-│   ├── isl_mobilenetv2.h5       # Main MobileNetV2 model
-│   └── trained_model.h5         # Alternative trained model
-│
-├── dataset/                       # Training and testing data
-│   ├── original_images/          # Training dataset
-│   │   ├── A/, B/, C/, ..., Z/   # Alphabet gesture folders
-│   │   └── 0/, 1/, 2/, ..., 9/   # Number gesture folders
-│   └── test_images/              # Testing dataset
-│       └── [same structure as original_images]
-│
-├── src/                          # Source code for model training
-│   ├── model.py                  # Model architecture and training
-│   ├── process2.py               # Data preprocessing
-│   ├── test.py                   # Model testing utilities
-│   └── coversiton2.py            # Conversion utilities
-│
-└── .vscode/                      # VS Code configuration
+├── README.md                       # Project documentation
+└── .vscode/                        # VS Code configuration
 ```
 
 ## 🎯 How to Use
 
-1. **Start the Application**: Run `python app.py` and open `http://localhost:5000`
+1. **Start the Application**: Navigate to `backend` folder, run `python app.py` and open `http://localhost:5000`
 
 2. **Camera Setup**: Click "Start Camera" to activate your webcam
 

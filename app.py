@@ -10,10 +10,12 @@ import os
 import mediapipe as mp
 import time
 
-app = Flask(__name__, template_folder='app/templates', static_folder='app/static')
+app = Flask(__name__, 
+            template_folder=os.path.abspath('frontend/templates'), 
+            static_folder=os.path.abspath('frontend/static'))
 
 # Load the trained model
-MODEL_PATH = r"C:\Users\ASLAM\Documents\ISL\ISL-Conversion\model\isl_mobilenetv2.h5"
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'backend', 'model', 'isl_mobilenetv2.h5')
 try:
     model = load_model(MODEL_PATH)
     print("Model loaded successfully!")

@@ -341,23 +341,25 @@ class ISLConverter {
         this.textArea.value = currentText + letter;
         
         // Animate the prediction (only text mode now)
-        this.predictedLetter.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+        this.predictedLetter.style.background = 'linear-gradient(135deg, var(--primary), var(--accent))';
         this.predictedLetter.style.color = 'white';
+        this.predictedLetter.style.boxShadow = '0 0 20px var(--accent-glow)';
         
-        this.predictedLetter.style.transform = 'scale(1.2)';
+        this.predictedLetter.style.transform = 'scale(1.1)';
         setTimeout(() => {
             this.predictedLetter.style.transform = 'scale(1)';
             // Reset to default styling after animation
             setTimeout(() => {
-                this.predictedLetter.style.background = '#f8f9fa';
-                this.predictedLetter.style.color = '#667eea';
+                this.predictedLetter.style.background = '';
+                this.predictedLetter.style.color = '';
+                this.predictedLetter.style.boxShadow = '';
             }, 1000);
         }, 200);
     }
     
     addToHistory(letter, confidence, mode = 'text') {
         const timestamp = new Date().toLocaleTimeString();
-        const modeIcon = '📝'; // Only text mode now
+        const modeIcon = '<i class="fas fa-keyboard"></i>'; // Only text mode now
         this.predictionHistory.unshift({ letter, confidence, timestamp, mode, modeIcon });
         
         // Keep only last 10 predictions

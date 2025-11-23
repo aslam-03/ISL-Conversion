@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISL to Text Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <header class="header">
@@ -17,10 +24,10 @@
         <main class="main-content">
             <div class="video-section">
                 <div class="video-container">
-                    <video id="video" autoplay muted style="display: block;"></video>
-                    <img id="videoFeed" src="" alt="Live Hand Detection Feed" style="width: 100%; height: auto; border-radius: 10px; display: none;">
-                    <canvas id="canvas" style="display: none;"></canvas>
-                    <canvas id="handCanvas" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
+                    <video id="video" autoplay muted></video>
+                    <img id="videoFeed" src="" alt="Live Hand Detection Feed">
+                    <canvas id="canvas"></canvas>
+                    <canvas id="handCanvas"></canvas>
                     <div class="video-overlay">
                         <div class="status-indicator" id="status">
                             <i class="fas fa-circle"></i>
@@ -28,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="video-controls">
                     <button id="startBtn" class="btn btn-primary">
                         <i class="fas fa-video"></i>
@@ -39,7 +46,7 @@
                         Stop Camera
                     </button>
                 </div>
-                
+
                 <div class="prediction-controls">
                     <button id="signToTextBtn" class="btn btn-success" disabled>
                         <i class="fas fa-hand-paper"></i>
@@ -113,4 +120,5 @@
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
+
 </html>
