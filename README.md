@@ -6,7 +6,7 @@ A real-time **Indian Sign Language (ISL) to Text Converter** that uses computer 
 
 ### Core Functionality
 - **Real-time Hand Detection**: Advanced hand tracking using MediaPipe with 21-point hand landmark detection
-- **ISL Gesture Recognition**: Recognizes 36 different ISL gestures (A-Z alphabets and 0-9 numbers)
+- **ISL Gesture Recognition**: Recognizes 34 ISL gestures (A–Z alphabets and digits 1–9) using a high-accuracy open-source model
 - **Live Video Feed**: Real-time camera integration with hand gesture visualization
 - **Instant Text Conversion**: Single-shot and continuous prediction modes
 
@@ -17,9 +17,10 @@ A real-time **Indian Sign Language (ISL) to Text Converter** that uses computer 
 - **Prediction History**: Track recent predictions with timestamps
 - **Composed Text Area**: Accumulate predictions into readable text with copy functionality
 - **Visual Hand Landmarks**: Real-time hand skeleton overlay on video feed
+- **Showcase Landing Page**: New hero, feature, and impact sections that highlight the project before jumping into the live demo
 
 ### Technical Features
-- **Enhanced Accuracy**: Multi-frame prediction averaging for improved accuracy
+- **Enhanced Accuracy**: Pre-trained open-source CNN with MediaPipe-assisted cropping for higher confidence predictions
 - **Image Enhancement**: Automatic contrast and brightness optimization
 - **Responsive Design**: Modern web interface with Font Awesome icons
 - **Error Handling**: Comprehensive error management and user feedback
@@ -32,7 +33,7 @@ A real-time **Indian Sign Language (ISL) to Text Converter** that uses computer 
 - **Deep Learning**: TensorFlow 2.13.0 with Keras
 - **Computer Vision**: OpenCV 4.8.1.78 for image processing
 - **Hand Detection**: MediaPipe for real-time hand tracking
-- **Model Architecture**: MobileNetV2 (pre-trained CNN for efficient inference)
+- **Model Architecture**: Open-source CNN exported as `sign_language_model.h5` by [indian_sign_language_model](https://huggingface.co/gowtham851/indian_sign_language_model)
 
 ### Frontend
 - **Web Technologies**: HTML5, CSS3, JavaScript (ES6+)
@@ -56,12 +57,11 @@ cd ISL-Conversion
 
 ### Step 2: Install Dependencies
 ```bash
-pip install -r backend/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Step 3: Run the Application
 ```bash
-cd backend
 python app.py
 ```
 
@@ -71,19 +71,22 @@ Open your browser and navigate to:
 http://localhost:5000
 ```
 
+> 💡 **First run downloads the Hugging Face model automatically.** Keep your internet connection on; the file (~30 MB) is saved to `backend/model/gowtham_indian_sign_language_model.h5`.
+
 ## 🗂️ Project Structure
 
 ```
 ISL-Conversion/
 │
-├── backend/                        # Backend logic and ML models
-│   ├── app.py                      # Main Flask application
-│   ├── requirements.txt            # Python dependencies
-│   ├── model/                      # Trained models
-│   │   ├── isl_mobilenetv2.h5      # Main MobileNetV2 model
-│   │   └── trained_model.h5        # Alternative trained model
+├── app.py                          # Main Flask application
+├── requirements.txt                # Python dependencies
+├── backend/
+│   ├── model/                      # Pre-trained models
+│   │   ├── gowtham_indian_sign_language_model.h5  # Auto-downloaded Hugging Face model
+│   │   ├── isl_mobilenetv2.h5      # Legacy MobileNetV2 model (fallback)
+│   │   └── trained_model.h5        # Additional legacy weights
 │   ├── dataset/                    # Training and testing data
-│   └── src/                        # Source code for model training
+│   └── src/                        # Source code for model experimentation
 │       ├── model.py                # Model architecture and training
 │       ├── process2.py             # Data preprocessing
 │       ├── test.py                 # Model testing utilities
@@ -123,11 +126,19 @@ ISL-Conversion/
 
 ## 🔧 Model Information
 
-- **Architecture**: MobileNetV2-based transfer learning
-- **Input Size**: 250×250×3 RGB images
-- **Output Classes**: 36 categories (A-Z, 0-9)
-- **Training Data**: Custom ISL gesture dataset
-- **Accuracy**: Optimized for real-time performance with confidence thresholds
+- **Architecture**: Open-source CNN (TensorFlow / Keras) released as [`gowtham851/indian_sign_language_model`](https://huggingface.co/gowtham851/indian_sign_language_model)
+- **Input Size**: 64×62×3 RGB hand crops (automatically inferred from the model)
+- **Output Classes**: 34 categories (A–Z + digits 1–9)
+- **Training Data**: Indian Sign Language dataset curated by the model author
+- **Accuracy**: Reported ~99% validation accuracy on the author's dataset (per Hugging Face model card)
+- **Fallback**: If the download fails, the app falls back to the bundled MobileNetV2 weights
+
+## 📦 Pre-trained Model Source
+
+- **Provider**: [Hugging Face](https://huggingface.co/)
+- **Repository**: [`gowtham851/indian_sign_language_model`](https://huggingface.co/gowtham851/indian_sign_language_model)
+- **License**: Listed on Hugging Face as an open-source Keras model. Please review the upstream repository for any usage constraints before deploying commercially.
+- **Automatic Download**: Managed in `app.py`. Delete `backend/model/gowtham_indian_sign_language_model.h5` if you need to force a re-download.
 
 ## 📞 Contact Information
 

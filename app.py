@@ -9,19 +9,116 @@ import threading
 import os
 import mediapipe as mp
 import time
+import urllib.request
+import shutil
+from typing import Optional, Tuple
 
 app = Flask(__name__, 
             template_folder=os.path.abspath('frontend/templates'), 
             static_folder=os.path.abspath('frontend/static'))
 
-# Load the trained model
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'backend', 'model', 'isl_mobilenetv2.h5')
-try:
-    model = load_model(MODEL_PATH)
-    print("Model loaded successfully!")
-except Exception as e:
-    print(f"Error loading model: {e}")
-    model = None
+BASE_DIR = os.path.dirname(__file__)
+MODEL_DIR = os.path.join(BASE_DIR, 'backend', 'model')
+
+OPEN_SOURCE_MODEL_INFO = {
+    'name': 'gowtham851/indian_sign_language_model',
+    'author_page': 'https://huggingface.co/gowtham851/indian_sign_language_model',
+    'download_url': 'https://huggingface.co/gowtham851/indian_sign_language_model/resolve/main/sign_language_model.h5?download=true',
+    'filename': 'gowtham_indian_sign_language_model.h5'
+}
+
+LEGACY_MODEL_FILENAME = 'isl_mobilenetv2.h5'
+MODEL_INPUT_SIZE = (250, 250)  # (height, width) placeholder, overwritten after load
+DEFAULT_CATEGORIES = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
+                      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                      'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+categories = DEFAULT_CATEGORIES.copy()
+
+
+def download_pretrained_model() -> Optional[str]:
+    """Download the open-source ISL model from Hugging Face if needed."""
+    target_path = os.path.join(MODEL_DIR, OPEN_SOURCE_MODEL_INFO['filename'])
+    if os.path.exists(target_path):
+        return target_path
+
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    print(f"Downloading open-source ISL model from {OPEN_SOURCE_MODEL_INFO['author_page']}...")
+
+    try:
+        with urllib.request.urlopen(OPEN_SOURCE_MODEL_INFO['download_url']) as response, open(target_path, 'wb') as out_file:  # type: ignore[arg-type]
+            shutil.copyfileobj(response, out_file)
+        print("Download complete.")
+        return target_path
+    except Exception as download_error:
+        print(f"Failed to download open-source model: {download_error}")
+        if os.path.exists(target_path):
+            os.remove(target_path)
+        return None
+
+
+def load_isl_model() -> Tuple[Optional[object], Optional[str], Optional[str]]:
+    """Attempt to load the open-source model, falling back to the legacy weights."""
+    preferred_path = download_pretrained_model()
+    fallback_path = os.path.join(MODEL_DIR, LEGACY_MODEL_FILENAME)
+    attempted_paths = [preferred_path, fallback_path]
+
+    for candidate in attempted_paths:
+        if not candidate or not os.path.exists(candidate):
+            continue
+        try:
+            loaded_model = load_model(candidate)
+            source = OPEN_SOURCE_MODEL_INFO['name'] if candidate == preferred_path else 'legacy/local mobilenet'
+            return loaded_model, candidate, source
+        except Exception as load_error:
+            print(f"Error loading model from {candidate}: {load_error}")
+
+    return None, None, None
+
+# Load the trained model (open-source first, legacy fallback)
+model, MODEL_PATH, MODEL_SOURCE = load_isl_model()
+
+if model is not None:
+    print(f"Model loaded successfully from {MODEL_SOURCE} ({MODEL_PATH}).")
+    input_shape = getattr(model, 'input_shape', None)
+    if input_shape and len(input_shape) >= 3:
+        height = input_shape[1] or MODEL_INPUT_SIZE[0]
+        width = input_shape[2] or MODEL_INPUT_SIZE[1]
+        if isinstance(height, (list, tuple)):
+            height = height[0]
+        if isinstance(width, (list, tuple)):
+            width = width[0]
+        MODEL_INPUT_SIZE = (int(height), int(width))
+
+    output_shape = getattr(model, 'output_shape', None)
+    num_outputs = output_shape[-1] if output_shape else None
+    if isinstance(num_outputs, (list, tuple)):
+        num_outputs = num_outputs[-1]
+    if isinstance(num_outputs, (np.integer, np.floating)):
+        num_outputs = int(num_outputs)
+    if num_outputs and num_outputs > 0 and num_outputs != len(categories):
+        prev_len = len(categories)
+        if num_outputs <= prev_len:
+            categories = categories[:num_outputs]
+        else:
+            extra = [f"CLASS_{prev_len + idx + 1}" for idx in range(num_outputs - prev_len)]
+            categories = categories + extra
+        print(f"Adjusted category list to match model outputs ({num_outputs}).")
+else:
+    print("Failed to load any model. Predictions will be disabled until a model is available.")
+
+MODEL_METADATA = {
+    'path': MODEL_PATH,
+    'source': MODEL_SOURCE,
+    'input_size': MODEL_INPUT_SIZE,
+    'categories': len(categories)
+}
+
+
+def _cv2_resize_dims() -> Tuple[int, int]:
+    """Return the resize tuple (width, height) expected by cv2.resize."""
+    height = max(int(MODEL_INPUT_SIZE[0]), 1)
+    width = max(int(MODEL_INPUT_SIZE[1]), 1)
+    return width, height
 
 # Define categories (same as during training)
 categories = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
@@ -87,21 +184,21 @@ def extract_hand_region(frame):
             
             # Resize to model input size with high quality interpolation
             if hand_region.size > 0:
-                hand_region = cv2.resize(hand_region, (250, 250), interpolation=cv2.INTER_CUBIC)
+                hand_region = cv2.resize(hand_region, _cv2_resize_dims(), interpolation=cv2.INTER_CUBIC)
                 return hand_region, True
         
         # If no hand detected, return original frame resized
-        return cv2.resize(frame, (250, 250), interpolation=cv2.INTER_CUBIC), False
+        return cv2.resize(frame, _cv2_resize_dims(), interpolation=cv2.INTER_CUBIC), False
         
     except Exception as e:
         print(f"Error extracting hand region: {e}")
-        return cv2.resize(frame, (250, 250), interpolation=cv2.INTER_CUBIC), False
+        return cv2.resize(frame, _cv2_resize_dims(), interpolation=cv2.INTER_CUBIC), False
 
 def preprocess_frame(frame):
     """Preprocess the frame for model prediction"""
     try:
         # Resize to the same size used in training
-        img = cv2.resize(frame, (250, 250))
+        img = cv2.resize(frame, _cv2_resize_dims())
         # Normalize pixel values
         img = img / 255.0
         # Add batch dimension
@@ -211,39 +308,13 @@ def predict_sign_enhanced(frame):
         if processed_frame is None:
             return "Error processing frame", 0.0, False
         
-        # Make prediction with confidence boosting
-        predictions = []
-        
-        # Original prediction
-        pred1 = model.predict(processed_frame, verbose=0)
-        predictions.append(pred1)
-        
-        # Apply slight transformations for robustness (only if confidence is low)
-        base_confidence = np.max(pred1)
-        if base_confidence < 0.85:  # Only if we need more confidence
-            # Slightly adjust brightness
-            brightened = cv2.convertScaleAbs(enhanced_frame, alpha=1.1, beta=10)
-            processed_bright = preprocess_frame(brightened)
-            if processed_bright is not None:
-                pred_bright = model.predict(processed_bright, verbose=0)
-                predictions.append(pred_bright)
-            
-            # Slightly adjust contrast
-            contrasted = cv2.convertScaleAbs(enhanced_frame, alpha=1.2, beta=0)
-            processed_contrast = preprocess_frame(contrasted)
-            if processed_contrast is not None:
-                pred_contrast = model.predict(processed_contrast, verbose=0)
-                predictions.append(pred_contrast)
-        
-        # Average the predictions for better accuracy
-        if len(predictions) > 1:
-            avg_prediction = np.mean(predictions, axis=0)
-        else:
-            avg_prediction = predictions[0]
-            
-        class_idx = np.argmax(avg_prediction)
-        confidence = float(np.max(avg_prediction))
-        predicted_label = categories[class_idx]
+        prediction = model.predict(processed_frame, verbose=0)
+        probabilities = np.squeeze(prediction)
+        if probabilities.ndim == 0:
+            probabilities = np.array([probabilities])
+        class_idx = int(np.argmax(probabilities))
+        confidence = float(np.max(probabilities))
+        predicted_label = categories[class_idx] if class_idx < len(categories) else f"CLASS_{class_idx + 1}"
         
         # Apply confidence threshold for better accuracy
         min_confidence = 0.6
@@ -278,9 +349,12 @@ def predict_sign(frame):
         
         # Make prediction
         prediction = model.predict(processed_frame, verbose=0)
-        class_idx = np.argmax(prediction)
-        confidence = float(np.max(prediction))
-        predicted_label = categories[class_idx]
+        probabilities = np.squeeze(prediction)
+        if probabilities.ndim == 0:
+            probabilities = np.array([probabilities])
+        class_idx = int(np.argmax(probabilities))
+        confidence = float(np.max(probabilities))
+        predicted_label = categories[class_idx] if class_idx < len(categories) else f"CLASS_{class_idx + 1}"
         
         return predicted_label, confidence
     except Exception as e:
@@ -615,7 +689,10 @@ def health():
     return jsonify({
         'status': 'healthy',
         'model_loaded': model is not None,
-        'categories_count': len(categories)
+        'categories_count': len(categories),
+        'model_path': MODEL_METADATA.get('path'),
+        'model_source': MODEL_METADATA.get('source'),
+        'input_size': MODEL_METADATA.get('input_size')
     })
 
 if __name__ == '__main__':
