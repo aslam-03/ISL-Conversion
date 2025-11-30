@@ -18,6 +18,7 @@ A real-time **Indian Sign Language (ISL) to Text Converter** that uses computer 
 - **Composed Text Area**: Accumulate predictions into readable text with copy functionality
 - **Visual Hand Landmarks**: Real-time hand skeleton overlay on video feed
 - **Showcase Landing Page**: New hero, feature, and impact sections that highlight the project before jumping into the live demo
+- **Dedicated Live Demo Page**: Focused `/demo` workspace keeps the translator UI separate from the marketing story
 
 ### Technical Features
 - **Enhanced Accuracy**: Pre-trained open-source CNN with MediaPipe-assisted cropping for higher confidence predictions
@@ -94,7 +95,8 @@ ISL-Conversion/
 │
 ├── frontend/                       # Frontend assets
 │   ├── templates/
-│   │   └── index.html              # Main web interface
+│   │   ├── index.html              # Marketing / landing experience
+│   │   └── demo.html               # Dedicated live demo workspace
 │   └── static/
 │       ├── css/
 │       │   └── style.css           # Frontend styling
@@ -107,22 +109,12 @@ ISL-Conversion/
 
 ## 🎯 How to Use
 
-1. **Start the Application**: Navigate to `backend` folder, run `python app.py` and open `http://localhost:5000`
-
-2. **Camera Setup**: Click "Start Camera" to activate your webcam
-
-3. **Single Prediction**: 
-   - Show your hand gesture to the camera
-   - Click "Hand Sign to Text" for individual predictions
-
-4. **Real-time Mode**:
-   - Click "Real-time Text" for continuous gesture recognition
-   - Watch predictions appear automatically in the text area
-
-5. **View Results**:
-   - Check the prediction confidence meter
-   - View prediction history with timestamps
-   - Copy composed text using the "Copy" button
+1. **Start the application**: From the project root, run `python app.py` and visit `http://localhost:5000` to load the landing page.
+2. **Open the live demo**: Click any "Launch Demo" button on the landing page (or go directly to `http://localhost:5000/demo`).
+3. **Camera setup**: On the demo page, click "Start Camera" to grant webcam access.
+4. **Single prediction**: Show a gesture and press "Hand Sign to Text" for one-off inference.
+5. **Real-time mode**: Use "Real-time Text" for continuous predictions streamed into the text area.
+6. **Review and export**: Monitor the confidence meter, check the history list, clear text, or copy the transcript when you're done.
 
 ## 🔧 Model Information
 

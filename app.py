@@ -366,6 +366,12 @@ def index():
     """Main page"""
     return render_template('index.html')
 
+
+@app.route('/demo')
+def demo():
+    """Live demo page"""
+    return render_template('demo.html')
+
 # Global camera variable to control when camera is active
 camera_active = False
 current_camera = None

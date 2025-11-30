@@ -29,10 +29,10 @@
                 <ul class="nav-links">
                     <li><a href="#features">Features</a></li>
                     <li><a href="#impact">Impact</a></li>
-                    <li><a href="#live-demo">Live Demo</a></li>
+                    <li><a href="{{ url_for('demo') }}">Live Demo</a></li>
                     <li><a href="#how-it-works">Workflow</a></li>
                 </ul>
-                <button class="btn btn-primary nav-cta" onclick="document.getElementById('live-demo').scrollIntoView({ behavior: 'smooth' })">
+                <button class="btn btn-primary nav-cta" onclick="window.location.href='{{ url_for('demo') }}'">
                     <i class="fas fa-play"></i>
                     Launch Demo
                 </button>
@@ -49,7 +49,7 @@
                         A production-ready assistant that spotlights each gesture, boosts confidence with MediaPipe crops, and streams predictions straight into your app.
                     </p>
                     <div class="hero-cta">
-                        <button class="btn btn-success" onclick="document.getElementById('live-demo').scrollIntoView({ behavior: 'smooth' })">
+                        <button class="btn btn-success" onclick="window.location.href='{{ url_for('demo') }}'">
                             <i class="fas fa-hand-paper"></i>
                             Try the Live Demo
                         </button>
@@ -111,7 +111,7 @@
             <div class="section-header">
                 <p class="eyebrow">What you get</p>
                 <h2>Hand-crafted for inclusive experiences.</h2>
-                <p class="section-subtitle">A single page workflow that pairs a production-grade inference engine with a delightful interface.</p>
+                <p class="section-subtitle">A streamlined two-page workflow that pairs a production-grade inference engine with a delightful interface.</p>
             </div>
             <div class="feature-grid">
                 <article class="feature-card">
@@ -194,91 +194,6 @@
             </div>
         </section>
 
-        <section id="live-demo" class="section live-demo">
-            <div class="section-header">
-                <p class="eyebrow">Live demo</p>
-                <h2>See the translator in action.</h2>
-                <p class="section-subtitle">Start your camera, raise a gesture, and watch it become text instantly.</p>
-            </div>
-            <div class="live-demo-grid">
-                <div class="video-section">
-                    <div class="video-container">
-                        <video id="video" autoplay muted></video>
-                        <img id="videoFeed" src="" alt="Live Hand Detection Feed">
-                        <canvas id="canvas"></canvas>
-                        <canvas id="handCanvas"></canvas>
-                        <div class="video-overlay">
-                            <div class="status-indicator" id="status">
-                                <i class="fas fa-circle"></i>
-                                <span>Ready</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="video-controls">
-                        <button id="startBtn" class="btn btn-primary">
-                            <i class="fas fa-video"></i>
-                            Start Camera
-                        </button>
-                        <button id="stopBtn" class="btn btn-secondary" disabled>
-                            <i class="fas fa-video-slash"></i>
-                            Stop Camera
-                        </button>
-                    </div>
-
-                    <div class="prediction-controls">
-                        <button id="signToTextBtn" class="btn btn-success" disabled>
-                            <i class="fas fa-hand-paper"></i>
-                            Hand Sign to Text
-                        </button>
-                        <button id="realtimeTextBtn" class="btn btn-primary" disabled>
-                            <i class="fas fa-play"></i>
-                            Real-time Text
-                        </button>
-                    </div>
-                </div>
-
-                <div class="results-section">
-                    <div class="prediction-card">
-                        <h3><i class="fas fa-brain"></i> Prediction</h3>
-                        <div class="prediction-result">
-                            <div class="predicted-letter" id="predictedLetter">-</div>
-                            <div class="confidence-bar">
-                                <div class="confidence-label">Confidence:</div>
-                                <div class="confidence-progress">
-                                    <div class="confidence-fill" id="confidenceFill"></div>
-                                </div>
-                                <div class="confidence-value" id="confidenceValue">0%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-card">
-                        <h3><i class="fas fa-keyboard"></i> Composed Text</h3>
-                        <div class="text-area">
-                            <textarea id="textArea" placeholder="Predicted letters will appear here..." readonly></textarea>
-                            <div class="text-controls">
-                                <button id="clearBtn" class="btn btn-warning">
-                                    <i class="fas fa-trash"></i>
-                                    Clear
-                                </button>
-                                <button id="copyBtn" class="btn btn-secondary">
-                                    <i class="fas fa-copy"></i>
-                                    Copy
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="history-card">
-                        <h3><i class="fas fa-history"></i> Prediction History</h3>
-                        <div class="history-list" id="historyList">
-                            <p class="empty-history">No predictions yet</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <section id="how-it-works" class="section steps">
             <div class="section-header">
@@ -304,7 +219,7 @@
             </div>
         </section>
 
-        <section class="section faq">
+        <section id="faq" class="section faq">
             <div>
                 <p class="eyebrow">Questions</p>
                 <h2>Everything needed to launch faster.</h2>
@@ -341,31 +256,16 @@
                 <p class="eyebrow">Ready to translate?</p>
                 <h2>Bring sign language closer to every conversation.</h2>
             </div>
-            <button class="btn btn-success" onclick="document.getElementById('live-demo').scrollIntoView({ behavior: 'smooth' })">
+            <button class="btn btn-success" onclick="window.location.href='{{ url_for('demo') }}'">
                 <i class="fas fa-rocket"></i>
                 Launch the Live Demo
             </button>
         </section>
     </main>
 
-    <div class="modal" id="errorModal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
-            <p id="errorMessage"></p>
-        </div>
-    </div>
-
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>Processing...</p>
-    </div>
-
     <footer class="footer page-shell">
         <p>&copy; 2025 ISL Converter. Made with ❤️ for accessibility.</p>
     </footer>
-
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 
 </html>
