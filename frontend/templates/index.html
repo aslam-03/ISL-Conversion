@@ -28,6 +28,7 @@
                 </div>
                 <ul class="nav-links">
                     <li><a href="#features">Features</a></li>
+                    <li><a href="#use-cases">Use Cases</a></li>
                     <li><a href="#impact">Impact</a></li>
                     <li><a href="{{ url_for('demo') }}">Live Demo</a></li>
                     <li><a href="#how-it-works">Workflow</a></li>
@@ -68,6 +69,30 @@
                             <span>&lt; 0.2s</span>
                             <p>Average latency</p>
                         </div>
+                    </div>
+
+                    <div class="hero-floating-panels">
+                        <article>
+                            <div class="panel-icon"><i class="fas fa-signal"></i></div>
+                            <div>
+                                <h4>Live link ready</h4>
+                                <p>Latency guardrails keep each inference smooth at sub-second speeds.</p>
+                            </div>
+                        </article>
+                        <article>
+                            <div class="panel-icon"><i class="fas fa-shield-check"></i></div>
+                            <div>
+                                <h4>Model health</h4>
+                                <p>Automatic fallbacks ensure a model is always available for demos.</p>
+                            </div>
+                        </article>
+                        <article>
+                            <div class="panel-icon"><i class="fas fa-universal-access"></i></div>
+                            <div>
+                                <h4>Inclusive defaults</h4>
+                                <p>Keyboard-first navigation and high-contrast modes ship out of the box.</p>
+                            </div>
+                        </article>
                     </div>
                 </div>
 
@@ -133,6 +158,52 @@
                     <span class="feature-icon"><i class="fas fa-users"></i></span>
                     <h3>Accessibility first</h3>
                     <p>Keyboard shortcuts, clear status messaging, and copy-ready transcripts for accessible flows.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="use-cases" class="section usecases">
+            <div class="section-header">
+                <p class="eyebrow">Where it lands</p>
+                <h2>Tailored rollouts for different teams.</h2>
+                <p class="section-subtitle">Curated starter kits outline how to plug the translator into common accessibility workflows.</p>
+            </div>
+            <div class="usecase-grid">
+                <article>
+                    <header>
+                        <span class="tag">Education</span>
+                        <i class="fas fa-graduation-cap"></i>
+                    </header>
+                    <h3>Campus accessibility desks</h3>
+                    <p>Embed the live translator next to lecture recordings so students can toggle captions or transcripts on demand.</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Canvas & Moodle friendly</li>
+                        <li><i class="fas fa-check"></i> Export transcripts as PDF</li>
+                    </ul>
+                </article>
+                <article>
+                    <header>
+                        <span class="tag">Customer care</span>
+                        <i class="fas fa-headset"></i>
+                    </header>
+                    <h3>Contact-center copilots</h3>
+                    <p>Agents mirror gestures from customers and rely on the model history to confirm order IDs, names, or intents.</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> CRM plug-in ready</li>
+                        <li><i class="fas fa-check"></i> Confidence-based alerts</li>
+                    </ul>
+                </article>
+                <article>
+                    <header>
+                        <span class="tag">Research</span>
+                        <i class="fas fa-flask"></i>
+                    </header>
+                    <h3>HCI prototyping labs</h3>
+                    <p>Teams iterate on gesture vocabularies quickly, swapping models while keeping this polished interface intact.</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Swap-in custom weights</li>
+                        <li><i class="fas fa-check"></i> Export anonymized logs</li>
+                    </ul>
                 </article>
             </div>
         </section>

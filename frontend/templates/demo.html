@@ -83,44 +83,64 @@
             </div>
             <div class="live-demo-grid">
                 <div class="video-section">
-                    <div class="video-container">
-                        <video id="video" autoplay muted></video>
-                        <img id="videoFeed" src="" alt="Live Hand Detection Feed">
-                        <canvas id="canvas"></canvas>
-                        <canvas id="handCanvas"></canvas>
-                        <div class="video-overlay">
-                            <div class="status-indicator" id="status">
-                                <i class="fas fa-circle"></i>
-                                <span>Ready</span>
+                    <div class="panel-card video-shell">
+                        <div class="video-container">
+                            <video id="video" autoplay muted></video>
+                            <img id="videoFeed" src="" alt="Live Hand Detection Feed">
+                            <canvas id="canvas"></canvas>
+                            <canvas id="handCanvas"></canvas>
+                            <div class="video-overlay">
+                                <div class="status-indicator" id="status">
+                                    <i class="fas fa-circle"></i>
+                                    <span>Ready</span>
+                                </div>
+                            </div>
+                            <div class="video-action-bar">
+                                <div class="action-group" aria-label="Camera controls">
+                                    <button id="startBtn" class="btn btn-primary">
+                                        <i class="fas fa-video"></i>
+                                        Start
+                                    </button>
+                                    <button id="stopBtn" class="btn btn-secondary" disabled>
+                                        <i class="fas fa-video-slash"></i>
+                                        Stop
+                                    </button>
+                                </div>
+                                <div class="action-group" aria-label="Prediction controls">
+                                    <button id="signToTextBtn" class="btn btn-success" disabled>
+                                        <i class="fas fa-hand-paper"></i>
+                                        Hand → Text
+                                    </button>
+                                    <button id="realtimeTextBtn" class="btn btn-primary" disabled>
+                                        <i class="fas fa-play"></i>
+                                        Realtime
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="video-controls">
-                        <button id="startBtn" class="btn btn-primary">
-                            <i class="fas fa-video"></i>
-                            Start Camera
-                        </button>
-                        <button id="stopBtn" class="btn btn-secondary" disabled>
-                            <i class="fas fa-video-slash"></i>
-                            Stop Camera
-                        </button>
-                    </div>
-
-                    <div class="prediction-controls">
-                        <button id="signToTextBtn" class="btn btn-success" disabled>
-                            <i class="fas fa-hand-paper"></i>
-                            Hand Sign to Text
-                        </button>
-                        <button id="realtimeTextBtn" class="btn btn-primary" disabled>
-                            <i class="fas fa-play"></i>
-                            Real-time Text
-                        </button>
+                        <div class="demo-status-grid">
+                            <article>
+                                <div class="status-chip online"><i class="fas fa-satellite-dish"></i> Idle link</div>
+                                <h4>Camera signal</h4>
+                                <p>Displays MediaPipe overlay and confirms your hand is centered.</p>
+                            </article>
+                            <article>
+                                <div class="status-chip sync"><i class="fas fa-sync"></i> Model ready</div>
+                                <h4>Model status</h4>
+                                <p>Weights auto-download on first run and stay cached for offline use.</p>
+                            </article>
+                            <article>
+                                <div class="status-chip note"><i class="fas fa-microphone-alt"></i> Audio optional</div>
+                                <h4>Output channel</h4>
+                                <p>Copy text instantly or route letters into your speech stack.</p>
+                            </article>
+                        </div>
                     </div>
                 </div>
 
                 <div class="results-section">
-                    <div class="prediction-card">
+                    <div class="prediction-card panel-card">
                         <h3><i class="fas fa-brain"></i> Prediction</h3>
                         <div class="prediction-result">
                             <div class="predicted-letter" id="predictedLetter">-</div>
@@ -134,7 +154,7 @@
                         </div>
                     </div>
 
-                    <div class="text-card">
+                    <div class="text-card panel-card">
                         <h3><i class="fas fa-keyboard"></i> Composed Text</h3>
                         <div class="text-area">
                             <textarea id="textArea" placeholder="Predicted letters will appear here..." readonly></textarea>
@@ -151,7 +171,7 @@
                         </div>
                     </div>
 
-                    <div class="history-card">
+                    <div class="history-card panel-card">
                         <h3><i class="fas fa-history"></i> Prediction History</h3>
                         <div class="history-list" id="historyList">
                             <p class="empty-history">No predictions yet</p>
@@ -189,6 +209,36 @@
                     </div>
                 </div>
                 <p class="section-subtitle">Need to troubleshoot? Head back to the landing FAQs for hardware tips.</p>
+            </div>
+        </section>
+
+        <section class="section guidance">
+            <div class="section-header">
+                <p class="eyebrow">Need a hand?</p>
+                <h2>Operator tips for silky-smooth demos.</h2>
+                <p class="section-subtitle">Save these quick notes before you walk into your next pitch or usability session.</p>
+            </div>
+            <div class="tips-grid">
+                <article>
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Lighting cue</h4>
+                    <p>Diffuse lamps or daylight from the side helps the landmarks lock on instantly.</p>
+                </article>
+                <article>
+                    <i class="fas fa-ruler-combined"></i>
+                    <h4>Framing guide</h4>
+                    <p>Keep elbows off frame and hold your palm 35–45cm away for the sharpest crops.</p>
+                </article>
+                <article>
+                    <i class="fas fa-wave-square"></i>
+                    <h4>Gesture pacing</h4>
+                    <p>Pause for 1 beat between letters in single-shot mode to avoid blended predictions.</p>
+                </article>
+                <article>
+                    <i class="fas fa-keyboard"></i>
+                    <h4>Shortcut friendly</h4>
+                    <p>Use the copy + clear buttons to reset the transcript between participants.</p>
+                </article>
             </div>
         </section>
     </main>
